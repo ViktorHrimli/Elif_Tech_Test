@@ -1,3 +1,5 @@
+import { TheShop } from "@/components/shops/TheShop";
+
 export default function Home() {
-  return <h1>Home</h1>;
+  return <TheShop></TheShop>;
 }
