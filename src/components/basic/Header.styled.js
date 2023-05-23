@@ -7,7 +7,7 @@ const HeaderConteiner = styled.header`
 
   width: 100%;
 
-  padding: 20px 20px 20px 200px;
+  padding: 20px;
 
   font-size: 20px;
   font-weight: 500;
@@ -22,6 +22,17 @@ const Navigation = styled.nav`
   gap: 15px;
 
   margin-right: auto;
+  margin-left: 200px;
 `;
 
-export { HeaderConteiner, Navigation };
+const LogoConteiner = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  color: #000;
+`;
+
+export { HeaderConteiner, Navigation, LogoConteiner };
