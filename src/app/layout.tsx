@@ -4,7 +4,7 @@ import "./globals.css";
 import { Inter, Roboto_Mono } from "next/font/google";
 
 // STYLES
-import { Container, Box } from "@mui/material";
+import { Box } from "@mui/material";
 
 // LOCALS IMPORT
 import { Header } from "@/components/basic/Header";
