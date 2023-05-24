@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@mui/material";
 
 import { ItemsConteiner } from "./Item.styled";

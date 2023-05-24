@@ -16,7 +16,7 @@ const HeaderConteiner = styled.header`
   background-color: #0074b7;
 `;
 
-const Navigation = styled.nav`
+const NavigationComponent = styled.nav`
   display: flex;
 
   gap: 15px;
@@ -35,4 +35,4 @@ const LogoConteiner = styled.div`
   color: #000;
 `;
 
-export { HeaderConteiner, Navigation, LogoConteiner };
+export { HeaderConteiner, NavigationComponent, LogoConteiner };

@@ -3,7 +3,7 @@
 import { Metadata } from "next";
 
 import "./globals.css";
-import { Inter, Roboto_Mono } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 
 // STYLES
 import { Box } from "@mui/material";

@@ -1,14 +1,18 @@
 "use client";
 
-import Link from "next/link";
-
 import { DeliveryDining } from "@mui/icons-material";
 
 import {
   HeaderConteiner,
-  Navigation,
   LogoConteiner,
 } from "@/components/basic/Header.styled.js";
+
+import { Navigation } from "./Navigation";
+
+const nav = [
+  { label: "Shop", href: "/" },
+  { label: "Cart", href: "/cart" },
+];
 
 const Header = () => {
   return (
@@ -17,10 +21,7 @@ const Header = () => {
         ElifTech_Delivery
         <DeliveryDining fontSize="medium" />
       </LogoConteiner>
-      <Navigation>
-        <Link href="/">Home</Link>
-        <Link href="/cart">Cart</Link>
-      </Navigation>
+      <Navigation navLinks={nav} />
     </HeaderConteiner>
   );
 };

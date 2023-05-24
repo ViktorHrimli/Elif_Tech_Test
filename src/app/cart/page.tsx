@@ -1,5 +1,3 @@
-("use client");
-
 import { TheCart } from "@/components/cart/TheCart";
 
 const Cart = () => {
