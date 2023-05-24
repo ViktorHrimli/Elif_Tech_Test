@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
 
 import { DeliveryDining } from "@mui/icons-material";
 
@@ -11,9 +10,7 @@ import {
   LogoConteiner,
 } from "@/components/basic/Header.styled.js";
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
   return (
     <HeaderConteiner>
       <LogoConteiner>

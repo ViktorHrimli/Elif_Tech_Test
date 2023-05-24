@@ -1,11 +1,9 @@
 ("use client");
 
-import React from "react";
+import { TheCart } from "@/components/cart/TheCart";
 
-type Props = {};
-
-const Cart = (props: Props) => {
-  return <h1>Cart</h1>;
+const Cart = () => {
+  return <TheCart />;
 };
 
 export default Cart;

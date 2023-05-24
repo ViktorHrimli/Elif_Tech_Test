@@ -1,3 +1,5 @@
+"use client";
+
 import { Metadata } from "next";
 
 import "./globals.css";
@@ -26,7 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <main>{children}</main>
+        <Box component={"main"} padding={"40px"}>
+          {children}
+        </Box>
         <Footer />
       </body>
     </html>
