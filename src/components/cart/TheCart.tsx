@@ -1,49 +1,83 @@
 "use client";
 
-import { Box, Container } from "@mui/material";
+import { useReducer } from "react";
+
+import { Box, Button, Typography } from "@mui/material";
 
 // LOCALS
 
 import { CartConteiner } from "./TheCart.styled";
 import { ListCart } from "./ListCart/ListCart";
+import { FormCart } from "./formCart/FormCart";
+// CONTEXT
+import { ContextCard } from "./ContextCard";
+
+import { reducer } from "@/helpers/reducer";
+
+const initialState = {
+  name: "",
+  email: "",
+  phone: "",
+  adress: "",
+};
 
 const TheCart = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleSubmitForm = () => {
+    const key = Object.keys(state);
+
+    key.forEach((element: any) => {
+      dispatch({ type: element, payload: "" });
+    });
+  };
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "50% auto",
-        gridGap: "10px",
-        marginTop: "25px",
-        height: "600px",
-      }}
-    >
+    <ContextCard.Provider value={{ state, dispatch }}>
       <Box
-        border={"1px solid blue"}
-        borderRadius={"8px"}
-        padding={"25px"}
-        color={"blue"}
-        bgcolor={"inherit"}
-        fontSize={"25px"}
-        display={"flex"}
-        flexDirection={"column"}
-        alignItems={"center"}
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "50% 50%",
+          gridGap: "10px",
+          marginTop: "25px",
+          height: "600px",
+          position: "relative",
+        }}
       >
-        First Row
         <Box
+          border={"1px solid blue"}
+          borderRadius={"8px"}
+          padding={"25px"}
+          color={"blue"}
+          bgcolor={"inherit"}
+          fontSize={"25px"}
           display={"flex"}
           flexDirection={"column"}
           alignItems={"center"}
-          justifyContent={"center"}
-          gap={"20px"}
-          padding={"5px"}
-          marginTop={"25px"}
-        ></Box>
+        >
+          <FormCart />
+        </Box>
+        <CartConteiner>
+          <ListCart />
+        </CartConteiner>
       </Box>
-      <CartConteiner>
-        <ListCart />
-      </CartConteiner>
-    </Box>
+      <Box
+        display={"flex"}
+        alignItems={"center"}
+        marginRight={"200px"}
+        position={"absolute"}
+        bottom={"0"}
+        right={"5px"}
+        gap={"50px"}
+      >
+        <Typography gutterBottom variant="h6" component="p">
+          Total Price: {2323}
+        </Typography>
+
+        <Button variant="contained" type="submit" onClick={handleSubmitForm}>
+          Submit
+        </Button>
+      </Box>
+    </ContextCard.Provider>
   );
 };
 
