@@ -1,18 +1,18 @@
 "use client";
 
-import { useReducer } from "react";
+import { useReducer, useContext } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
 
 // LOCALS
-
 import { CartConteiner } from "./TheCart.styled";
 import { ListCart } from "./ListCart/ListCart";
 import { FormCart } from "./formCart/FormCart";
 // CONTEXT
 import { ContextCard } from "./ContextCard";
-
+// HELPERS
 import { reducer } from "@/helpers/reducer";
+// CONTEXT
 
 const initialState = {
   name: "",
@@ -31,6 +31,7 @@ const TheCart = () => {
       dispatch({ type: element, payload: "" });
     });
   };
+
   return (
     <ContextCard.Provider value={{ state, dispatch }}>
       <Box

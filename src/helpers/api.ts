@@ -10,4 +10,12 @@ async function sendOrder(data: any) {
   const res = await fetch("");
 }
 
-export { getDataShop, sendOrder };
+async function getShop() {
+  const res = await fetch(
+    "https://eliftech-server-test.onrender.com/api/market"
+  );
+
+  return res.json();
+}
+
+export { getDataShop, sendOrder, getShop };
