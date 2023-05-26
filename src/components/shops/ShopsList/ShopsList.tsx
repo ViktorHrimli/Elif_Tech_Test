@@ -5,7 +5,7 @@ import { getShop } from "@/helpers/api";
 // COMPONENTS
 import { Item } from "./Item";
 // CONTEXT
-import { ShopContext } from "../ShopContext";
+import { ShopContext } from "@/context";
 
 const ShopsList = () => {
   const [state, setState] = useState([]);

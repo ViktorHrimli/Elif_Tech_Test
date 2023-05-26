@@ -2,11 +2,7 @@ import { Button } from "@mui/material";
 
 import { ItemsConteiner } from "./Item.styled";
 
-interface IItemProps {
-  children: string;
-  setIsActive: (value: string) => void;
-  isActive: string;
-}
+import { IItemProps } from "@/types";
 
 const Item = ({ children, setIsActive, isActive }: IItemProps) => {
   return (

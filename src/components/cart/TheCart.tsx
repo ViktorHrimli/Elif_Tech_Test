@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useContext } from "react";
+import { useReducer, useState } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
 
@@ -9,7 +9,7 @@ import { CartConteiner } from "./TheCart.styled";
 import { ListCart } from "./ListCart/ListCart";
 import { FormCart } from "./formCart/FormCart";
 // CONTEXT
-import { ContextCard } from "./ContextCard";
+import { ContextCard } from "@/context";
 // HELPERS
 import { reducer } from "@/helpers/reducer";
 // CONTEXT
@@ -21,12 +21,14 @@ const initialState = {
   adress: "",
 };
 
+type TotalPriceType = { quantity: number; price: number; title: string }[];
+
 const TheCart = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [totalPrice, setTotalPrice] = useState<any>(new Map());
 
   const handleSubmitForm = () => {
     const key = Object.keys(state);
-
     key.forEach((element: any) => {
       dispatch({ type: element, payload: "" });
     });
@@ -58,25 +60,25 @@ const TheCart = () => {
           <FormCart />
         </Box>
         <CartConteiner>
-          <ListCart />
+          <ListCart setTotalPrice={setTotalPrice} />
         </CartConteiner>
-      </Box>
-      <Box
-        display={"flex"}
-        alignItems={"center"}
-        marginRight={"200px"}
-        position={"absolute"}
-        bottom={"0"}
-        right={"5px"}
-        gap={"50px"}
-      >
-        <Typography gutterBottom variant="h6" component="p">
-          Total Price: {2323}
-        </Typography>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          marginRight={"200px"}
+          position={"absolute"}
+          bottom={"0"}
+          right={"5px"}
+          gap={"50px"}
+        >
+          <Typography gutterBottom variant="h6" component="p">
+            Total Price: {}
+          </Typography>
 
-        <Button variant="contained" type="submit" onClick={handleSubmitForm}>
-          Submit
-        </Button>
+          <Button variant="contained" type="submit" onClick={handleSubmitForm}>
+            Submit
+          </Button>
+        </Box>
       </Box>
     </ContextCard.Provider>
   );

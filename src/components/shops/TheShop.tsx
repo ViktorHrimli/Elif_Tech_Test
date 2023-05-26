@@ -10,7 +10,7 @@ import { CardList } from "./CardList/CardList";
 import { ShopContent } from "./TheShop.styled";
 
 // CONTEXT
-import { ShopContext } from "./ShopContext";
+import { ShopContext } from "@/context";
 
 const TheShop = () => {
   const [isActiveShop, setIsActiveShop] = useState<string>("");

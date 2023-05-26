@@ -5,12 +5,29 @@ import {
   Button,
   Typography,
   CardMedia,
-  Skeleton,
 } from "@mui/material";
 
-import { IShop } from "./CardList";
+import { IShop } from "@/types";
 
-const CardItem = ({ _id, description, photo, price, shop, title }: IShop) => {
+interface ICardItem extends IShop {
+  setCart: (value: any) => void;
+}
+
+const CardItem = ({
+  _id,
+  description,
+  photo,
+  price,
+  shop,
+  title,
+  setCart,
+}: ICardItem) => {
+  const handleAddToCart = () => {
+    setCart((prev: Array<{}>) =>
+      prev.concat({ title, price, shop, _id, photo })
+    );
+  };
+
   return (
     <Card sx={{ width: "345px", height: "260px", backgroundColor: "inherit" }}>
       <CardMedia image={photo} sx={{ height: 140 }} />
@@ -26,7 +43,12 @@ const CardItem = ({ _id, description, photo, price, shop, title }: IShop) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="contained" id={_id}>
+        <Button
+          size="small"
+          variant="contained"
+          id={_id}
+          onClick={handleAddToCart}
+        >
           Add
         </Button>
       </CardActions>
