@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+"use client";
 
 import "./globals.css";
 import { Roboto_Mono } from "next/font/google";
@@ -10,19 +10,15 @@ import { Box } from "@mui/material";
 import { Header } from "@/components/basic/Header";
 import { Footer } from "@/components/basic/Footer";
 import { ContextLayout } from "@/components/basic/ContextLayout";
+import { HTML } from "@/components/basic/HTML";
 // TYPES
 import { LayoutType } from "@/types";
 
 const inter = Roboto_Mono({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Delivery App",
-  description: "Test great company Elif Tech :)",
-};
-
 export default function RootLayout({ children }: LayoutType) {
   return (
-    <html lang="en">
+    <HTML>
       <body className={inter.className}>
         <Header />
         <ContextLayout>
@@ -32,6 +28,6 @@ export default function RootLayout({ children }: LayoutType) {
         </ContextLayout>
         <Footer />
       </body>
-    </html>
+    </HTML>
   );
 }
