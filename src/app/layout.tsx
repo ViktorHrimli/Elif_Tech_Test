@@ -1,6 +1,3 @@
-"use client";
-import { Metadata } from "next";
-
 import "./globals.css";
 import { Roboto_Mono } from "next/font/google";
 
@@ -15,11 +12,6 @@ import { ContextLayout } from "@/components/basic/ContextLayout";
 import { LayoutType } from "@/types";
 
 const inter = Roboto_Mono({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Delivery App",
-  description: "Test great company Elif Tech :)",
-};
 
 export default function RootLayout({ children }: LayoutType) {
   return (
