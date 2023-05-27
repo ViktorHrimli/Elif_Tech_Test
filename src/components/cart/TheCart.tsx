@@ -39,9 +39,7 @@ const TheCart = () => {
       );
     };
     culcTotalPrice();
-  }, []);
-
-  console.log(resultPrice);
+  }, [totalPrice]);
 
   const handleSubmitForm = async () => {
     const key = Object.keys(state);
