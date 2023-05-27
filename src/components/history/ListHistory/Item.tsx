@@ -28,13 +28,13 @@ const Item = ({ photo, price, title, shop }: IShop) => {
             gap: "5px",
           }}
         >
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="body2" component="div">
             {title}
           </Typography>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="body2" component="div">
             {shop}
           </Typography>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="body2" component="div">
             Price:
             {price}
           </Typography>

@@ -23,8 +23,10 @@ const CardItem = ({
   setCart,
 }: ICardItem) => {
   const handleAddToCart = () => {
-    setCart((prev: Array<{}>) =>
-      prev.concat({ title, price, shop, _id, photo })
+    setCart((prev: any) =>
+      !prev.find((item: any) => item._id === _id)
+        ? prev.concat({ title, price, shop, _id, photo })
+        : prev
     );
   };
 

@@ -1,5 +1,5 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { Box } from "@mui/material";
 
@@ -16,10 +16,19 @@ interface IListCart {
 const ListCart = ({ setTotalPrice }: IListCart) => {
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
+  const handleDeleteCart = (id: string) => {
+    setCartOrder((prev: any) => prev.filter((item: any) => item._id !== id));
+  };
+
   return (
     <Box display={"flex"} flexDirection={"column"} gap={"15px"}>
       {cartOrder.map((item: IShop, id: number) => (
-        <CartItem key={id} {...item} setTotalPrice={setTotalPrice} />
+        <CartItem
+          key={id}
+          {...item}
+          setTotalPrice={setTotalPrice}
+          onDelete={handleDeleteCart}
+        />
       ))}
     </Box>
   );
