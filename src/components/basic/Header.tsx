@@ -12,6 +12,7 @@ import { Navigation } from "./Navigation";
 const nav = [
   { label: "Shop", href: "/" },
   { label: "Cart", href: "/cart" },
+  { label: "History", href: "/history" },
 ];
 
 const Header = () => {

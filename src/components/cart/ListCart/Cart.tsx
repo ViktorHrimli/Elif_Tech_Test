@@ -77,7 +77,7 @@ const CartItem = ({
               onClick={() =>
                 setQuality((quant) => {
                   setCountPrice(countPrice - price);
-
+                  setTotalPrice((prev: any) => prev.set(title, countPrice));
                   return --quant;
                 })
               }
@@ -91,6 +91,7 @@ const CartItem = ({
               onClick={() =>
                 setQuality((quant) => {
                   setCountPrice(countPrice + price);
+                  setTotalPrice((prev: any) => prev.set(title, countPrice));
                   return ++quant;
                 })
               }

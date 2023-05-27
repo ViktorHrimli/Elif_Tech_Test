@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState, useContext } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
 
@@ -10,9 +10,11 @@ import { ListCart } from "./ListCart/ListCart";
 import { FormCart } from "./formCart/FormCart";
 // CONTEXT
 import { ContextCard } from "@/context";
+import { LayoutContext } from "@/context";
 // HELPERS
 import { reducer } from "@/helpers/reducer";
-// CONTEXT
+// API
+import { sendOrder } from "@/helpers/api";
 
 const initialState = {
   name: "",
@@ -26,12 +28,29 @@ type TotalPriceType = { quantity: number; price: number; title: string }[];
 const TheCart = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [totalPrice, setTotalPrice] = useState<any>(new Map());
+  const [resultPrice, setResultPrice] = useState(0);
 
-  const handleSubmitForm = () => {
+  const { cartOrder }: any = useContext(LayoutContext);
+
+  useEffect(() => {
+    const culcTotalPrice = () => {
+      totalPrice.forEach((item: any) =>
+        setResultPrice((prev) => (prev += item))
+      );
+    };
+    culcTotalPrice();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalPrice]);
+
+  const handleSubmitForm = async () => {
     const key = Object.keys(state);
     key.forEach((element: any) => {
       dispatch({ type: element, payload: "" });
     });
+
+    const order = await sendOrder({ ...state, orders: cartOrder });
+    console.log(order);
   };
 
   return (
@@ -72,7 +91,7 @@ const TheCart = () => {
           gap={"50px"}
         >
           <Typography gutterBottom variant="h6" component="p">
-            Total Price: {}
+            Total Price: {resultPrice}
           </Typography>
 
           <Button variant="contained" type="submit" onClick={handleSubmitForm}>
