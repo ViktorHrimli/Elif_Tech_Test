@@ -1,16 +1,17 @@
 "use client";
 
-import { Item } from "./item";
+import { Box } from "@mui/material";
+import { Item } from "./Item";
 
 const HistoryItem = (props: any) => {
   const { orders } = props;
 
   return (
-    <div>
+    <Box display={"flex"} gap={"20px"}>
       {orders.map((item: any, id: number) => (
         <Item key={id} {...item} />
       ))}
-    </div>
+    </Box>
   );
 };
 export { HistoryItem };

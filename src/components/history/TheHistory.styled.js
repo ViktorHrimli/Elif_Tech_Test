@@ -6,7 +6,7 @@ const HistoryConteiner = styled.div`
   align-items: center;
   justify-content: start;
 
-  height: 70%;
+  height: 500px;
 
   padding: 20px;
 

@@ -1,13 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 
 // API
 import { getAllOrder } from "@/helpers/api";
 
 import { HistoryItem } from "./HistoryItem";
 
-const ListHistory = ({}) => {
+type ListHistoryType = {
+  email: string;
+  phone: string;
+};
+
+const ListHistory = ({ email, phone }: ListHistoryType) => {
   const [historyState, setHistoryState] = useState([]);
 
   useEffect(() => {
@@ -16,13 +22,19 @@ const ListHistory = ({}) => {
     });
   }, []);
 
+  console.log(historyState);
+
   return (
-    <div>
+    <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
       {historyState &&
-        historyState.map((item: any, id) => {
-          return <HistoryItem key={id} {...item} />;
-        })}
-    </div>
+        historyState.map((item: any, id) =>
+          item.email.includes(email || phone) ? (
+            <HistoryItem key={id} {...item} />
+          ) : (
+            ""
+          )
+        )}
+    </Box>
   );
 };
 

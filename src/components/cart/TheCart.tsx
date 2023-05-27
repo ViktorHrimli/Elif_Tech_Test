@@ -41,7 +41,9 @@ const TheCart = () => {
     culcTotalPrice();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalPrice]);
+  }, []);
+
+  console.log(resultPrice);
 
   const handleSubmitForm = async () => {
     const key = Object.keys(state);
@@ -50,7 +52,6 @@ const TheCart = () => {
     });
 
     const order = await sendOrder({ ...state, orders: cartOrder });
-    console.log(order);
   };
 
   return (
@@ -91,7 +92,7 @@ const TheCart = () => {
           gap={"50px"}
         >
           <Typography gutterBottom variant="h6" component="p">
-            Total Price: {resultPrice}
+            Total Price: {resultPrice.toFixed(2)}
           </Typography>
 
           <Button variant="contained" type="submit" onClick={handleSubmitForm}>

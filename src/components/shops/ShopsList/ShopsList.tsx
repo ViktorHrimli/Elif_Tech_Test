@@ -27,12 +27,15 @@ const ShopsList = () => {
         gap: "20px",
       }}
     >
-      {state &&
+      {state.length !== 0 ? (
         state.map((item, id) => (
           <Item key={id} setIsActive={setIsActiveShop} isActive={isActiveShop}>
             {item}
           </Item>
-        ))}
+        ))
+      ) : (
+        <div>...Loading</div>
+      )}
     </div>
   );
 };

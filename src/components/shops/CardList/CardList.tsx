@@ -22,7 +22,7 @@ const CardList = ({ isActive }: { isActive: string }) => {
 
   return (
     <Box display={"grid"} gap={"15px"} gridTemplateColumns={"345px 345px"}>
-      {!isLoading &&
+      {state.length !== 0 ? (
         state.map((item: IShop) => {
           if (item.shop.toLowerCase() === isActive) {
             return <CardItem key={item._id} {...item} setCart={setCartOrder} />;
@@ -31,7 +31,10 @@ const CardList = ({ isActive }: { isActive: string }) => {
           if (isActive === "") {
             return <CardItem key={item._id} {...item} setCart={setCartOrder} />;
           }
-        })}
+        })
+      ) : (
+        <div>...Loading</div>
+      )}
     </Box>
   );
 };

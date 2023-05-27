@@ -2,15 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import {
-  Card,
-  CardContent,
-  Typography,
-  Skeleton,
-  Box,
-  CardMedia,
-  Button,
-} from "@mui/material";
+import { Card, CardContent, Typography, Box, CardMedia } from "@mui/material";
 
 import { IShop } from "@/types";
 
@@ -31,7 +23,8 @@ const CartItem = ({
 
   useEffect(() => {
     setTotalPrice((prev: any) => prev.set(title, countPrice));
-  }, [countPrice, setTotalPrice, quality, title]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countPrice, quality]);
 
   return (
     <Card
@@ -45,11 +38,6 @@ const CartItem = ({
       <Box display={"flex"}>
         <CardMedia image={photo} sx={{ height: "200px", width: "70%" }} />
 
-        {/* <Skeleton
-          sx={{ height: "200px", width: "70%" }}
-          animation="wave"
-          variant="rectangular"
-        /> */}
         <CardContent
           sx={{
             display: "flex",
