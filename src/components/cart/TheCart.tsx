@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useContext } from "react";
+import { useEffect, useReducer, useState, useContext } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
 
@@ -9,10 +9,12 @@ import { CartConteiner } from "./TheCart.styled";
 import { ListCart } from "./ListCart/ListCart";
 import { FormCart } from "./formCart/FormCart";
 // CONTEXT
-import { ContextCard } from "./ContextCard";
+import { ContextCard } from "@/context";
+import { LayoutContext } from "@/context";
 // HELPERS
 import { reducer } from "@/helpers/reducer";
-// CONTEXT
+// API
+import { sendOrder } from "@/helpers/api";
 
 const initialState = {
   name: "",
@@ -21,15 +23,35 @@ const initialState = {
   adress: "",
 };
 
+type TotalPriceType = { quantity: number; price: number; title: string }[];
+
 const TheCart = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [totalPrice, setTotalPrice] = useState<any>(new Map());
+  const [resultPrice, setResultPrice] = useState(0);
 
-  const handleSubmitForm = () => {
+  const { cartOrder }: any = useContext(LayoutContext);
+
+  useEffect(() => {
+    const culcTotalPrice = () => {
+      totalPrice.forEach((item: any) =>
+        setResultPrice((prev) => (prev += item))
+      );
+    };
+    culcTotalPrice();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log(resultPrice);
+
+  const handleSubmitForm = async () => {
     const key = Object.keys(state);
-
     key.forEach((element: any) => {
       dispatch({ type: element, payload: "" });
     });
+
+    const order = await sendOrder({ ...state, orders: cartOrder });
   };
 
   return (
@@ -58,25 +80,25 @@ const TheCart = () => {
           <FormCart />
         </Box>
         <CartConteiner>
-          <ListCart />
+          <ListCart setTotalPrice={setTotalPrice} />
         </CartConteiner>
-      </Box>
-      <Box
-        display={"flex"}
-        alignItems={"center"}
-        marginRight={"200px"}
-        position={"absolute"}
-        bottom={"0"}
-        right={"5px"}
-        gap={"50px"}
-      >
-        <Typography gutterBottom variant="h6" component="p">
-          Total Price: {2323}
-        </Typography>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          marginRight={"200px"}
+          position={"absolute"}
+          bottom={"0"}
+          right={"5px"}
+          gap={"50px"}
+        >
+          <Typography gutterBottom variant="h6" component="p">
+            Total Price: {resultPrice.toFixed(2)}
+          </Typography>
 
-        <Button variant="contained" type="submit" onClick={handleSubmitForm}>
-          Submit
-        </Button>
+          <Button variant="contained" type="submit" onClick={handleSubmitForm}>
+            Submit
+          </Button>
+        </Box>
       </Box>
     </ContextCard.Provider>
   );

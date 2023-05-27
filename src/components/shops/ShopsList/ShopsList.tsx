@@ -5,7 +5,7 @@ import { getShop } from "@/helpers/api";
 // COMPONENTS
 import { Item } from "./Item";
 // CONTEXT
-import { ShopContext } from "../ShopContext";
+import { ShopContext } from "@/context";
 
 const ShopsList = () => {
   const [state, setState] = useState([]);
@@ -27,12 +27,15 @@ const ShopsList = () => {
         gap: "20px",
       }}
     >
-      {state &&
+      {state.length !== 0 ? (
         state.map((item, id) => (
           <Item key={id} setIsActive={setIsActiveShop} isActive={isActiveShop}>
             {item}
           </Item>
-        ))}
+        ))
+      ) : (
+        <div>...Loading</div>
+      )}
     </div>
   );
 };

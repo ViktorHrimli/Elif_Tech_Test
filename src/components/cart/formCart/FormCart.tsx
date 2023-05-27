@@ -2,7 +2,8 @@ import { useContext, useReducer } from "react";
 
 import { TextField, Box } from "@mui/material";
 
-import { ContextCard } from "../ContextCard";
+// CONTEXT
+import { ContextCard } from "@/context";
 
 const FormCart = () => {
   const { state, dispatch }: any = useContext(ContextCard);

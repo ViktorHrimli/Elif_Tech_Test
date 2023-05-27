@@ -5,19 +5,14 @@ import { Box } from "@mui/material";
 import { CardItem } from "./Card";
 
 import { getDataShop } from "@/helpers/api";
+import { LayoutContext } from "@/context";
 
-export interface IShop {
-  _id: string;
-  shop: string;
-  title: string;
-  description: string;
-  photo: string;
-  price: number;
-}
+import { IShop } from "@/types";
 
 const CardList = ({ isActive }: { isActive: string }) => {
   const [state, setState] = useState<IShop[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { setCartOrder }: any = useContext(LayoutContext);
 
   useEffect(() => {
     getDataShop()
@@ -27,16 +22,19 @@ const CardList = ({ isActive }: { isActive: string }) => {
 
   return (
     <Box display={"grid"} gap={"15px"} gridTemplateColumns={"345px 345px"}>
-      {!isLoading &&
+      {state.length !== 0 ? (
         state.map((item: IShop) => {
           if (item.shop.toLowerCase() === isActive) {
-            return <CardItem key={item._id} {...item} />;
+            return <CardItem key={item._id} {...item} setCart={setCartOrder} />;
           }
 
           if (isActive === "") {
-            return <CardItem key={item._id} {...item} />;
+            return <CardItem key={item._id} {...item} setCart={setCartOrder} />;
           }
-        })}
+        })
+      ) : (
+        <div>...Loading</div>
+      )}
     </Box>
   );
 };

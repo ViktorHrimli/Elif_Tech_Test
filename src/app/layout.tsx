@@ -1,6 +1,4 @@
 "use client";
-
-import { useState } from "react";
 import { Metadata } from "next";
 
 import "./globals.css";
@@ -12,8 +10,9 @@ import { Box } from "@mui/material";
 // LOCALS IMPORT
 import { Header } from "@/components/basic/Header";
 import { Footer } from "@/components/basic/Footer";
-
-// CONTEXT
+import { ContextLayout } from "@/components/basic/ContextLayout";
+// TYPES
+import { LayoutType } from "@/types";
 
 const inter = Roboto_Mono({ subsets: ["latin"] });
 
@@ -22,20 +21,16 @@ export const metadata: Metadata = {
   description: "Test great company Elif Tech :)",
 };
 
-type LayoutType = {
-  children: React.ReactNode;
-};
-
 export default function RootLayout({ children }: LayoutType) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <Header />
-
-        <Box component={"main"} padding={"40px"}>
-          {children}
-        </Box>
-
+        <ContextLayout>
+          <Box component={"main"} padding={"40px"}>
+            {children}
+          </Box>
+        </ContextLayout>
         <Footer />
       </body>
     </html>
