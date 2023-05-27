@@ -2,12 +2,20 @@
 
 import { useEffect, useState } from "react";
 
-import { Card, CardContent, Typography, Box, CardMedia } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  CardMedia,
+  Button,
+} from "@mui/material";
 
 import { IShop } from "@/types";
 
 interface ICartItem extends IShop {
   setTotalPrice: any;
+  onDelete: (id: string) => void;
 }
 
 const CartItem = ({
@@ -16,6 +24,7 @@ const CartItem = ({
   shop,
   title,
   _id,
+  onDelete,
   setTotalPrice,
 }: ICartItem) => {
   const [quality, setQuality] = useState(1);
@@ -44,16 +53,16 @@ const CartItem = ({
             flexDirection: "column",
             justifyContent: "start",
             alignItems: "start",
-            gap: "5px",
+            gap: "20px",
           }}
         >
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="body2" component="div">
             {title}
           </Typography>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="body2" component="div">
             {shop}
           </Typography>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="body2" component="div">
             Price:
             {countPrice.toFixed(2)}
           </Typography>
@@ -87,6 +96,15 @@ const CartItem = ({
               +
             </button>
           </Box>
+
+          <Button
+            type="button"
+            variant="contained"
+            size="small"
+            onClick={() => onDelete(_id)}
+          >
+            Delete
+          </Button>
         </CardContent>
       </Box>
     </Card>

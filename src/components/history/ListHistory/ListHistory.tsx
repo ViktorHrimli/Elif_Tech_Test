@@ -22,8 +22,6 @@ const ListHistory = ({ email, phone }: ListHistoryType) => {
     });
   }, []);
 
-  console.log(historyState);
-
   return (
     <Box display={"flex"} flexDirection={"column"} gap={"20px"}>
       {historyState &&

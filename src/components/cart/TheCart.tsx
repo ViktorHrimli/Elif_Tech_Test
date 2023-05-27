@@ -30,7 +30,7 @@ const TheCart = () => {
   const [totalPrice, setTotalPrice] = useState<any>(new Map());
   const [resultPrice, setResultPrice] = useState(0);
 
-  const { cartOrder }: any = useContext(LayoutContext);
+  const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
   useEffect(() => {
     const culcTotalPrice = () => {
@@ -39,8 +39,6 @@ const TheCart = () => {
       );
     };
     culcTotalPrice();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log(resultPrice);
@@ -50,7 +48,7 @@ const TheCart = () => {
     key.forEach((element: any) => {
       dispatch({ type: element, payload: "" });
     });
-
+    setCartOrder([]);
     const order = await sendOrder({ ...state, orders: cartOrder });
   };
 
