@@ -16,6 +16,13 @@ import { IShop } from "@/types";
 interface ICartItem extends IShop {
   setTotalPrice: any;
   onDelete: (id: string) => void;
+  setIsReload: any;
+}
+
+interface ITotalPriceObj {
+  quality: number;
+  title: string;
+  countPrice: number;
 }
 
 const CartItem = ({
@@ -25,15 +32,17 @@ const CartItem = ({
   title,
   _id,
   onDelete,
+  setIsReload,
   setTotalPrice,
 }: ICartItem) => {
   const [quality, setQuality] = useState(1);
   const [countPrice, setCountPrice] = useState(price);
 
   useEffect(() => {
-    setTotalPrice((prev: any) => prev.set(title, countPrice));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [countPrice, quality]);
+    setTotalPrice((prev: any) =>
+      prev.set(title, { countPrice, quality, action: 1 })
+    );
+  }, []);
 
   return (
     <Card
@@ -71,13 +80,17 @@ const CartItem = ({
             <button
               type="button"
               disabled={quality === 1}
-              onClick={() =>
-                setQuality((quant) => {
-                  setCountPrice(countPrice - price);
-                  setTotalPrice((prev: any) => prev.set(title, countPrice));
-                  return --quant;
-                })
-              }
+              onClick={() => {
+                setQuality((quant) => --quant);
+
+                setCountPrice(countPrice - price);
+
+                setTotalPrice((prev: any) =>
+                  prev.set(title, { countPrice, quality, action: 0 })
+                );
+
+                setIsReload((prev: boolean) => !prev);
+              }}
             >
               -
             </button>
@@ -85,13 +98,17 @@ const CartItem = ({
             {quality}
             <button
               type="button"
-              onClick={() =>
-                setQuality((quant) => {
-                  setCountPrice(countPrice + price);
-                  setTotalPrice((prev: any) => prev.set(title, countPrice));
-                  return ++quant;
-                })
-              }
+              onClick={() => {
+                setQuality((quant) => ++quant);
+
+                setCountPrice(countPrice + price);
+
+                setTotalPrice((prev: any) =>
+                  prev.set(title, { countPrice, quality, action: 1 })
+                );
+
+                setIsReload((prev: boolean) => !prev);
+              }}
             >
               +
             </button>
