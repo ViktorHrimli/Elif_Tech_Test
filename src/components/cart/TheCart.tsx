@@ -23,23 +23,26 @@ const initialState = {
   adress: "",
 };
 
-type TotalPriceType = { quantity: number; price: number; title: string }[];
-
 const TheCart = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [totalPrice, setTotalPrice] = useState<any>(new Map());
+  const [totalPrice, setTotalPrice] = useState(new Map());
+  const [isReload, setIsReload] = useState(false);
   const [resultPrice, setResultPrice] = useState(0);
 
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
+  console.log(totalPrice);
+
   useEffect(() => {
     const culcTotalPrice = () => {
-      totalPrice.forEach((item: any) =>
-        setResultPrice((prev) => (prev += item))
-      );
+      totalPrice.forEach((item: any) => {
+        setResultPrice((prev) =>
+          item.action ? (prev += item.countPrice) : (prev -= item.countPrice)
+        );
+      });
     };
     culcTotalPrice();
-  }, [totalPrice]);
+  }, [totalPrice, isReload]);
 
   const handleSubmitForm = async () => {
     const key = Object.keys(state);
@@ -47,7 +50,8 @@ const TheCart = () => {
       dispatch({ type: element, payload: "" });
     });
     setCartOrder([]);
-    const order = await sendOrder({ ...state, orders: cartOrder });
+    // SEND
+    sendOrder({ ...state, orders: cartOrder });
   };
 
   return (
@@ -76,7 +80,7 @@ const TheCart = () => {
           <FormCart />
         </Box>
         <CartConteiner>
-          <ListCart setTotalPrice={setTotalPrice} />
+          <ListCart setTotalPrice={setTotalPrice} setIsReload={setIsReload} />
         </CartConteiner>
         <Box
           display={"flex"}
