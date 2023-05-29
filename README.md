@@ -4,6 +4,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Deploy in Vercel
 
+#### Live Page: https://elif-tech-test-git-pagehistory-viktorhrimli.vercel.app/
+
 First, run the development server:
 
 ```bash
