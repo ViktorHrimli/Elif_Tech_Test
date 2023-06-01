@@ -3,7 +3,8 @@
 import { useContext, useReducer } from "react";
 
 import { TextField, Box } from "@mui/material";
-
+// LOCALS
+import Map from "../../map/Map";
 // CONTEXT
 import { ContextCard } from "@/context";
 
@@ -19,6 +20,9 @@ const FormCart = () => {
       gap={"20px"}
       width={"100%"}
     >
+      <Box width={"100%"} height={"400px"}>
+        <Map />
+      </Box>
       <TextField
         id="name"
         label="Name"

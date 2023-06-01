@@ -42,6 +42,7 @@ const CartItem = ({
     setTotalPrice((prev: any) =>
       prev.set(title, { countPrice, quality, action: 1 })
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -118,7 +119,13 @@ const CartItem = ({
             type="button"
             variant="contained"
             size="small"
-            onClick={() => onDelete(_id)}
+            onClick={() => {
+              onDelete(_id);
+              setTotalPrice((prev: any) =>
+                prev.set(title, { countPrice, quality, action: 0 })
+              );
+              setIsReload((prev: boolean) => !prev);
+            }}
           >
             Delete
           </Button>
