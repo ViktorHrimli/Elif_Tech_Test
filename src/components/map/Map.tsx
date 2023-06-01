@@ -1,43 +1,59 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState, useCallback } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
-const API_KEY = "AIzaSyDrpFqonbOVosZSK8Iuz73QkF3XP2BeEdM";
+import { successCallback, errorCallback } from "@/helpers/getLocation";
 
 const containerStyle = {
   width: "100%",
   height: "400px",
 };
 
-const center = {
-  lat: 50.433108,
-  lng: 30.396197,
-};
-
 function Map() {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: API_KEY,
+    googleMapsApiKey: "AIzaSyDrpFqonbOVosZSK8Iuz73QkF3XP2BeEdM",
   });
 
-  const [map, setMap] = React.useState(null);
+  const center = {
+    lat: -3.745,
+    lng: -38.523,
+  };
 
-  const onLoad = React.useCallback(function callback(map: any) {
-    // // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    // const bounds = new window.google.maps.LatLngBounds(center);
+  const [map, setMap] = useState(null);
+  const [isCenter, setIsCenter] = useState<any>(null);
 
-    // map.fitBounds(bounds);
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: any) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
 
+        const coords = {
+          lat: lat,
+          lng: lng,
+        };
+
+        setIsCenter(coords);
+      }, errorCallback);
+    } else {
+      console.log("Геолокация не поддерживается вашим браузером");
+    }
+  }, []);
+
+  const onLoad = useCallback(function callback(map: any) {
     setMap(map);
   }, []);
 
-  const onUnmount = React.useCallback(function callback(map: any) {
+  const onUnmount = useCallback(function callback(map: any) {
     setMap(null);
   }, []);
 
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={center}
+      center={isCenter || center}
       zoom={10}
       onLoad={onLoad}
       onUnmount={onUnmount}
