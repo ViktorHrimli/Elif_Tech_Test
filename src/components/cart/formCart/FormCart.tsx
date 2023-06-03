@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useReducer } from "react";
+import { useContext, useState } from "react";
 
 import { TextField, Box } from "@mui/material";
 // LOCALS
@@ -10,6 +10,7 @@ import { ContextCard } from "@/context";
 
 const FormCart = () => {
   const { state, dispatch }: any = useContext(ContextCard);
+  const [addresMap, setAddresMap] = useState("");
 
   return (
     <Box
@@ -21,7 +22,7 @@ const FormCart = () => {
       width={"100%"}
     >
       <Box width={"100%"} height={"400px"}>
-        <Map />
+        <Map address={addresMap} setAddres={setAddresMap} />
       </Box>
       <TextField
         id="name"
@@ -56,7 +57,10 @@ const FormCart = () => {
         label="Adress"
         variant="outlined"
         sx={{ width: "70%" }}
-        onChange={(e) => dispatch({ type: "adress", payload: e.target.value })}
+        onChange={(e) => {
+          dispatch({ type: "adress", payload: e.target.value });
+          setAddresMap(e.target.value);
+        }}
         value={state.adress}
         required
       />
