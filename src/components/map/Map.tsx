@@ -1,13 +1,7 @@
 "use client";
 
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  MutableRefObject,
-} from "react";
-
+import React, { useEffect, useState, useCallback, useRef } from "react";
+// GOOGLE MAPS API
 import {
   GoogleMap,
   useJsApiLoader,
@@ -15,18 +9,18 @@ import {
   DirectionsRenderer,
   Autocomplete,
 } from "@react-google-maps/api";
-
+// ICONS
 import { FaLocationArrow, FaTimes } from "react-icons/fa";
-
-import { successCallback, errorCallback } from "@/helpers/getLocation";
+import { AiOutlineSearch } from "react-icons/ai";
+// UI
 import { TextField, Box, Typography, Icon } from "@mui/material";
+// LOCALS
+import { errorCallback } from "@/helpers/getLocation";
 
 const containerStyle = {
   width: "100%",
   height: "400px",
 };
-
-const LIBRARIES = ["places"];
 
 function Map({
   address,
@@ -38,7 +32,7 @@ function Map({
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDrpFqonbOVosZSK8Iuz73QkF3XP2BeEdM",
-    libraries: LIBRARIES,
+    libraries: ["places"],
   });
 
   const center = {
@@ -115,7 +109,7 @@ function Map({
   }, []);
 
   return isLoaded ? (
-    <Box>
+    <Box position={"relative"}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={isCenter || center}
@@ -134,25 +128,33 @@ function Map({
         )}
       </GoogleMap>
       <Box zIndex="1" position={"absolute"} left={0} top={0}>
-        <Box>
-          <Box flexGrow={1}>
-            <Autocomplete>
-              <TextField
-                type="text"
-                placeholder="Destination"
-                ref={destiantionRef}
-                onBlur={(e) => setAddres(e.target.value)}
-              />
-            </Autocomplete>
-          </Box>
-
-          <button type="button" onClick={calculateDistanse}>
-            Click
-          </button>
+        <Box flexGrow={1}>
+          <Autocomplete>
+            <TextField
+              type="text"
+              variant="filled"
+              placeholder="Destination"
+              ref={destiantionRef}
+              sx={{ position: "relative" }}
+              onBlur={(e) => setAddres(e.target.value)}
+            />
+          </Autocomplete>
+          <AiOutlineSearch
+            onClick={calculateDistanse}
+            width={20}
+            height={20}
+            color="black"
+            style={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              cursor: "pointer",
+            }}
+          />
         </Box>
       </Box>
 
-      <Box position={"absolute"} left={0} top={300}>
+      <Box position={"absolute"} left={10} top={300}>
         <Typography>Distance: {distance} </Typography>
         <Typography>Duration: {duration} </Typography>
         <button
