@@ -49,7 +49,7 @@ function Map({
   const [isCenter, setIsCenter] = useState<any>(null);
 
   const [map, setMap] = useState<any>(null);
-  const [directionsResponse, setDirectionsResponse] = useState(null);
+  const [directionsResponse, setDirectionsResponse] = useState<any>(null);
 
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
@@ -75,22 +75,23 @@ function Map({
     }
   }, []);
 
+  console.log(address);
+
   const calculateDistanse = async () => {
     const directionService = new google.maps.DirectionsService();
 
-    const res: any = await directionService
-      .route({
-        origin: isCenter,
-        destination: destiantionRef,
-        travelMode: google.maps.TravelMode.DRIVING,
-      })
-      .then((result: any) => {
-        console.log(result);
+    const res: any = await directionService.route({
+      origin: isCenter,
+      optimizeWaypoints: true,
+      unitSystem: google.maps.UnitSystem.METRIC,
+      destination: { query: address },
+      language: "ua, ru, en",
+      travelMode: google.maps.TravelMode.DRIVING,
+    });
 
-        setDirectionsResponse(result);
-        setDistance(result.routes[0].legs[0].distance.text);
-        setDuration(result.routes[0].legs[0].duration.text);
-      });
+    setDirectionsResponse(res);
+    setDistance(res.routes[0].legs[0].distance.text);
+    setDuration(res.routes[0].legs[0].duration.text);
   };
 
   function clearRoute() {
@@ -140,6 +141,7 @@ function Map({
                 type="text"
                 placeholder="Destination"
                 ref={destiantionRef}
+                onBlur={(e) => setAddres(e.target.value)}
               />
             </Autocomplete>
           </Box>
