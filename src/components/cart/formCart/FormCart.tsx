@@ -1,6 +1,7 @@
 "use client";
 
-import { useContext, useReducer } from "react";
+import { useContext, useState, useRef } from "react";
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 
 import { TextField, Box } from "@mui/material";
 // LOCALS
@@ -10,6 +11,7 @@ import { ContextCard } from "@/context";
 
 const FormCart = () => {
   const { state, dispatch }: any = useContext(ContextCard);
+  const [addresMap, setAddresMap] = useState("");
 
   return (
     <Box
@@ -21,7 +23,7 @@ const FormCart = () => {
       width={"100%"}
     >
       <Box width={"100%"} height={"400px"}>
-        <Map />
+        <Map address={addresMap} setAddres={setAddresMap} />
       </Box>
       <TextField
         id="name"
@@ -51,12 +53,16 @@ const FormCart = () => {
         onChange={(e) => dispatch({ type: "phone", payload: e.target.value })}
         required
       />
+
       <TextField
         id="adress"
         label="Adress"
         variant="outlined"
-        sx={{ width: "70%" }}
-        onChange={(e) => dispatch({ type: "adress", payload: e.target.value })}
+        sx={{ width: "461px" }}
+        onChange={(e) => {
+          dispatch({ type: "adress", payload: e.target.value });
+          setAddresMap(e.target.value);
+        }}
         value={state.adress}
         required
       />
