@@ -9,48 +9,58 @@ import {
   DirectionsRenderer,
   Autocomplete,
 } from "@react-google-maps/api";
+
 // ICONS
 import { FaLocationArrow, FaTimes } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
+import { BsGeoAltFill } from "react-icons/bs";
 // UI
 import { TextField, Box, Typography, Icon } from "@mui/material";
 // LOCALS
 import { errorCallback } from "@/helpers/getLocation";
+
+type Libraries = (
+  | "drawing"
+  | "geometry"
+  | "localContext"
+  | "places"
+  | "visualization"
+)[];
+
+const LIBRARIES: Libraries = ["places"];
 
 const containerStyle = {
   width: "100%",
   height: "400px",
 };
 
-function Map({
-  address,
-  setAddres,
-}: {
+interface IMap {
   address: string;
   setAddres: (value: string) => void;
-}) {
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDrpFqonbOVosZSK8Iuz73QkF3XP2BeEdM",
-    libraries: ["places"],
-  });
+}
 
-  const center = {
-    lat: -3.745,
-    lng: -38.523,
-  };
-
+function Map({ address, setAddres }: IMap) {
+  const center = { lat: 50.447653388995164, lng: 30.523871183395386 };
+  // USER COORDS
   const [isCenter, setIsCenter] = useState<any>(null);
-
+  // STATE MAP
   const [map, setMap] = useState<any>(null);
   const [directionsResponse, setDirectionsResponse] = useState<any>(null);
-
+  // STATE RESULT
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
 
+  // REFS
+  const libraries = useRef(LIBRARIES);
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef<any>();
-
+  // INITITAL MAP
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyDrpFqonbOVosZSK8Iuz73QkF3XP2BeEdM",
+    libraries: libraries.current,
+  });
+  // OTHER
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position: any) => {
@@ -69,8 +79,6 @@ function Map({
     }
   }, []);
 
-  console.log(address);
-
   const calculateDistanse = async () => {
     const directionService = new google.maps.DirectionsService();
 
@@ -86,6 +94,15 @@ function Map({
     setDirectionsResponse(res);
     setDistance(res.routes[0].legs[0].distance.text);
     setDuration(res.routes[0].legs[0].duration.text);
+  };
+
+  const handleClickMarker = (event: any) => {
+    const { latLng } = event;
+    const lat = latLng.lat();
+    const lng = latLng.lng();
+    console.log("Кликнутое местоположение:", { lat, lng });
+
+    // Далее можно добавить логику для создания маркера или обработки клика
   };
 
   function clearRoute() {
@@ -119,6 +136,7 @@ function Map({
           zoomControl: false,
         }}
         zoom={10}
+        onClick={handleClickMarker}
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
@@ -126,6 +144,20 @@ function Map({
         {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
         )}
+        <BsGeoAltFill
+          aria-label="center back"
+          onClick={() => {
+            map.panTo(isCenter);
+            map.setZoom(15);
+          }}
+          style={{
+            cursor: "pointer",
+            position: "absolute",
+            right: 10,
+            bottom: 70,
+            color: "black",
+          }}
+        />
       </GoogleMap>
       <Box zIndex="1" position={"absolute"} left={0} top={0}>
         <Box flexGrow={1}>
@@ -133,7 +165,7 @@ function Map({
             <TextField
               type="text"
               variant="filled"
-              placeholder="Destination"
+              placeholder="Adress"
               ref={destiantionRef}
               sx={{ position: "relative" }}
               onBlur={(e) => setAddres(e.target.value)}
@@ -154,18 +186,9 @@ function Map({
         </Box>
       </Box>
 
-      <Box position={"absolute"} left={10} top={300}>
+      <Box position={"absolute"} right={30} top={415}>
         <Typography>Distance: {distance} </Typography>
         <Typography>Duration: {duration} </Typography>
-        <button
-          aria-label="center back"
-          onClick={() => {
-            map.panTo(isCenter);
-            map.setZoom(15);
-          }}
-        >
-          <FaLocationArrow />
-        </button>
       </Box>
     </Box>
   ) : (

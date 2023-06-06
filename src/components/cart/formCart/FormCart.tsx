@@ -1,6 +1,7 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 
 import { TextField, Box } from "@mui/material";
 // LOCALS
@@ -52,11 +53,12 @@ const FormCart = () => {
         onChange={(e) => dispatch({ type: "phone", payload: e.target.value })}
         required
       />
+
       <TextField
         id="adress"
         label="Adress"
         variant="outlined"
-        sx={{ width: "70%" }}
+        sx={{ width: "461px" }}
         onChange={(e) => {
           dispatch({ type: "adress", payload: e.target.value });
           setAddresMap(e.target.value);
