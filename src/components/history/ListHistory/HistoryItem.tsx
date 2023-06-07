@@ -7,7 +7,12 @@ const HistoryItem = (props: any) => {
   const { orders } = props;
 
   return (
-    <Box display={"grid"} gridTemplateColumns={"50% 50%"} gap={"20px"}>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      flexWrap={"wrap"}
+      gap={"20px"}
+    >
       {orders.map((item: any, id: number) => (
         <Item key={id} {...item} />
       ))}

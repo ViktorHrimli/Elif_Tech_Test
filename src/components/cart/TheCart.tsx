@@ -31,13 +31,11 @@ const TheCart = () => {
 
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
-  console.log(totalPrice);
-
   useEffect(() => {
     const culcTotalPrice = () => {
       totalPrice.forEach((item: any) => {
         setResultPrice((prev) =>
-          item.action ? (prev += item.countPrice) : (prev -= item.countPrice)
+          item.action ? (prev += item.price) : (prev -= item.price)
         );
       });
     };

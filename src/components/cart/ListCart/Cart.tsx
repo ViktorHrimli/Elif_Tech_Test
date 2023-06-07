@@ -40,7 +40,7 @@ const CartItem = ({
 
   useEffect(() => {
     setTotalPrice((prev: any) =>
-      prev.set(title, { countPrice, quality, action: 1 })
+      prev.set(title, { price, quality, action: 1 })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -87,7 +87,7 @@ const CartItem = ({
                 setCountPrice(countPrice - price);
 
                 setTotalPrice((prev: any) =>
-                  prev.set(title, { countPrice, quality, action: 0 })
+                  prev.set(title, { price, quality, action: 0 })
                 );
 
                 setIsReload((prev: boolean) => !prev);
@@ -105,7 +105,7 @@ const CartItem = ({
                 setCountPrice(countPrice + price);
 
                 setTotalPrice((prev: any) =>
-                  prev.set(title, { countPrice, quality, action: 1 })
+                  prev.set(title, { price, quality, action: 1 })
                 );
 
                 setIsReload((prev: boolean) => !prev);
