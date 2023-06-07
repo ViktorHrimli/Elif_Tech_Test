@@ -103,13 +103,6 @@ function Map({ address, setAddres }: IMap) {
     console.log("Кликнутое местоположение:", { lat, lng });
   };
 
-  function clearRoute() {
-    setDirectionsResponse(null);
-    setDistance("");
-    setDuration("");
-    destiantionRef.current.value = "";
-  }
-
   const onLoad = useCallback(
     function callback(map: any) {
       setMap(map);
