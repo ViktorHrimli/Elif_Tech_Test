@@ -4,9 +4,10 @@ const HistoryConteiner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: center;
 
   height: 500px;
+  width: 800px;
 
   padding: 20px;
 

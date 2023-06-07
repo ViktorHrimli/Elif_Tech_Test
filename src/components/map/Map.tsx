@@ -42,7 +42,7 @@ interface IMap {
 function Map({ address, setAddres }: IMap) {
   const center = { lat: 50.447653388995164, lng: 30.523871183395386 };
   // USER COORDS
-  const [isCenter, setIsCenter] = useState<any>(null);
+  const [isCenter, setIsCenter] = useState<any>(center);
   // STATE MAP
   const [map, setMap] = useState<any>(null);
   const [directionsResponse, setDirectionsResponse] = useState<any>(null);
@@ -72,7 +72,7 @@ function Map({ address, setAddres }: IMap) {
           lng: lng,
         };
 
-        setIsCenter(coords);
+        setIsCenter({ lat, lng });
       }, errorCallback);
     } else {
       prompt("Геолокация не поддерживается вашим браузером");
@@ -101,16 +101,7 @@ function Map({ address, setAddres }: IMap) {
     const lat = latLng.lat();
     const lng = latLng.lng();
     console.log("Кликнутое местоположение:", { lat, lng });
-
-    // Далее можно добавить логику для создания маркера или обработки клика
   };
-
-  function clearRoute() {
-    setDirectionsResponse(null);
-    setDistance("");
-    setDuration("");
-    destiantionRef.current.value = "";
-  }
 
   const onLoad = useCallback(
     function callback(map: any) {
@@ -129,7 +120,7 @@ function Map({ address, setAddres }: IMap) {
     <Box position={"relative"}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={isCenter || center}
+        center={isCenter}
         options={{
           mapTypeControl: false,
           clickableIcons: true,

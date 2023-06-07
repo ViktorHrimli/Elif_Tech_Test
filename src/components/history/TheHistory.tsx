@@ -12,7 +12,12 @@ const TheHistory = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   return (
-    <Box display={"grid"} gridTemplateRows={"200px auto"}>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      gap={"50px"}
+      alignItems={"center"}
+    >
       <Box
         display={"flex"}
         flexDirection={"column"}
