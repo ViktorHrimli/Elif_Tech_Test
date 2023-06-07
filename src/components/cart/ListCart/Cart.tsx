@@ -105,7 +105,7 @@ const CartItem = ({
             size="small"
             onClick={() => {
               onDelete(_id);
-              eventCulcTotalPrice.decrement({ title, price, count });
+              eventCulcTotalPrice.deleteCard(title);
             }}
           >
             Delete

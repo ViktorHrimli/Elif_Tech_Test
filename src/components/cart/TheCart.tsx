@@ -29,6 +29,8 @@ interface ICountPrice {
   count: number;
 }
 
+const middle: any = [];
+
 const TheCart = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [totalPrice, setTotalPrice] = useState<any>([]);
@@ -37,16 +39,13 @@ const TheCart = () => {
 
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
-  const middle: any = [];
-
   const eventCulcTotalPrice = {
     increment: (item: ICountPrice) => {
       const findIndex = cartOrder.findIndex(
         (elem: any) => elem.title === item.title
       );
 
-      item.count += 1;
-      middle[findIndex] = item;
+      middle.push(item);
 
       setTotalPrice([...middle]);
     },
@@ -54,22 +53,27 @@ const TheCart = () => {
       const findIndex = cartOrder.findIndex(
         (elem: any) => elem.title === item.title
       );
-      item.count -= 1;
 
-      middle[findIndex] = item;
+      middle.splice(findIndex, 1);
 
       setTotalPrice([...middle]);
     },
+
     firstRender: (item: ICountPrice) => {
       setTotalPrice((prev: any) => prev.concat(item));
     },
+
+    deleteCard: (title: string) => {
+      setTotalPrice((prev: any) =>
+        prev.filter((item: any) => item.title !== title)
+      );
+    },
   };
+  console.log(totalPrice);
 
   useEffect(() => {
-    console.log(totalPrice);
-
     let res = totalPrice.reduce(
-      (total: number, item: ICountPrice) => item.price * item.count + total,
+      (total: number, item: ICountPrice) => item.price + total,
       0
     );
 
