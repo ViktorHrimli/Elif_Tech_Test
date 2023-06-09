@@ -40,9 +40,9 @@ interface IMap {
 }
 
 function Map({ address, setAddres }: IMap) {
-  const center = { lat: 50.447653388995164, lng: 30.523871183395386 };
   // USER COORDS
-  const [isCenter, setIsCenter] = useState<any>(center);
+  const [isCenter, setIsCenter] = useState<any>(null);
+  const [coordsList, setCoordsList] = useState<any>([]);
   // STATE MAP
   const [map, setMap] = useState<any>(null);
   const [directionsResponse, setDirectionsResponse] = useState<any>(null);
@@ -67,12 +67,8 @@ function Map({ address, setAddres }: IMap) {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
 
-        const coords = {
-          lat: lat,
-          lng: lng,
-        };
-
         setIsCenter({ lat, lng });
+        setCoordsList([{ lat, lng }]);
       }, errorCallback);
     } else {
       prompt("Геолокация не поддерживается вашим браузером");
@@ -83,7 +79,7 @@ function Map({ address, setAddres }: IMap) {
     const directionService = new google.maps.DirectionsService();
 
     const res: any = await directionService.route({
-      origin: isCenter,
+      origin: coordsList[0],
       optimizeWaypoints: true,
       unitSystem: google.maps.UnitSystem.METRIC,
       destination: { query: address },
@@ -100,15 +96,20 @@ function Map({ address, setAddres }: IMap) {
     const { latLng } = event;
     const lat = latLng.lat();
     const lng = latLng.lng();
-    console.log("Кликнутое местоположение:", { lat, lng });
+
+    setCoordsList([{ lat, lng }]);
+    console.log("Click:", { lat, lng });
   };
 
   const onLoad = useCallback(
     function callback(map: any) {
-      setMap(map);
-      map.panTo(isCenter);
-      map.setZoom(15);
+      if (isCenter) {
+        setMap(map);
+        map.panTo(isCenter);
+        map.setZoom(15);
+      }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isCenter]
   );
 
@@ -131,13 +132,30 @@ function Map({ address, setAddres }: IMap) {
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
-        <Marker position={isCenter} />
+        {coordsList.length &&
+          coordsList.map((item: any, id: number) => (
+            <Marker key={id} position={item}>
+              <FaLocationArrow size={20} />
+            </Marker>
+          ))}
+
         {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
         )}
         <BsGeoAltFill
           aria-label="center back"
           onClick={() => {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition((position: any) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                setIsCenter({ lat, lng });
+              }, errorCallback);
+            } else {
+              prompt("Геолокация не поддерживается вашим браузером");
+            }
+
             map.panTo(isCenter);
             map.setZoom(15);
           }}
@@ -163,7 +181,7 @@ function Map({ address, setAddres }: IMap) {
             />
           </Autocomplete>
           <AiOutlineSearch
-            onClick={calculateDistanse}
+            onClick={() => (address.length > 3 ? calculateDistanse() : null)}
             width={20}
             height={20}
             color="black"

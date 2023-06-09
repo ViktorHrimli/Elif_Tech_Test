@@ -30,10 +30,8 @@ const CartItem = ({
   const [quality, setQuality] = useState(1);
   const [countPrice, setCountPrice] = useState(price);
 
-  let count = 1;
-
   useEffect(() => {
-    eventCulcTotalPrice.firstRender({ title, price, count });
+    eventCulcTotalPrice.firstRender({ title, countPrice });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -76,9 +74,14 @@ const CartItem = ({
               onClick={() => {
                 setQuality((quant) => --quant);
 
-                setCountPrice(countPrice - price);
+                const totalPrice = countPrice - price;
 
-                eventCulcTotalPrice.decrement({ title, price, count });
+                setCountPrice(totalPrice);
+
+                eventCulcTotalPrice.decrement({
+                  title,
+                  countPrice: totalPrice,
+                });
               }}
             >
               -
@@ -90,9 +93,14 @@ const CartItem = ({
               onClick={() => {
                 setQuality((quant) => ++quant);
 
-                setCountPrice(countPrice + price);
+                const totalPrice = countPrice + price;
 
-                eventCulcTotalPrice.increment({ title, price, count });
+                setCountPrice(totalPrice);
+
+                eventCulcTotalPrice.increment({
+                  title,
+                  countPrice: totalPrice,
+                });
               }}
             >
               +

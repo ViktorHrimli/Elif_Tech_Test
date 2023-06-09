@@ -24,9 +24,8 @@ const initialState = {
 };
 
 interface ICountPrice {
-  price: number;
   title: string;
-  count: number;
+  countPrice: number;
 }
 
 const middle: any = [];
@@ -45,18 +44,22 @@ const TheCart = () => {
         (elem: any) => elem.title === item.title
       );
 
-      middle.push(item);
-
-      setTotalPrice([...middle]);
+      setTotalPrice((prev: any) =>
+        prev.map((ele: any, id: number) =>
+          id === findIndex ? (ele = item) : ele
+        )
+      );
     },
     decrement: (item: ICountPrice) => {
       const findIndex = cartOrder.findIndex(
         (elem: any) => elem.title === item.title
       );
 
-      middle.splice(findIndex, 1);
-
-      setTotalPrice([...middle]);
+      setTotalPrice((prev: any) =>
+        prev.map((ele: any, id: number) =>
+          id === findIndex ? (ele = item) : ele
+        )
+      );
     },
 
     firstRender: (item: ICountPrice) => {
@@ -73,7 +76,7 @@ const TheCart = () => {
 
   useEffect(() => {
     let res = totalPrice.reduce(
-      (total: number, item: ICountPrice) => item.price + total,
+      (total: number, item: ICountPrice) => item.countPrice + total,
       0
     );
 
