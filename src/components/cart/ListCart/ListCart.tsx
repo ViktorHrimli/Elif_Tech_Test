@@ -10,11 +10,10 @@ import { LayoutContext } from "@/context";
 import { IShop } from "@/types";
 
 interface IListCart {
-  setTotalPrice: any;
-  setIsReload: (value: boolean) => void;
+  eventCulcTotalPrice: any;
 }
 
-const ListCart = ({ setTotalPrice, setIsReload }: IListCart) => {
+const ListCart = ({ eventCulcTotalPrice }: IListCart) => {
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
   const handleDeleteCart = (id: string) => {
@@ -27,9 +26,8 @@ const ListCart = ({ setTotalPrice, setIsReload }: IListCart) => {
         <CartItem
           key={id}
           {...item}
-          setIsReload={setIsReload}
-          setTotalPrice={setTotalPrice}
           onDelete={handleDeleteCart}
+          eventCulcTotalPrice={eventCulcTotalPrice}
         />
       ))}
     </Box>

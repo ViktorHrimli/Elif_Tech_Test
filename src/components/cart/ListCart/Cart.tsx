@@ -14,15 +14,8 @@ import {
 import { IShop } from "@/types";
 
 interface ICartItem extends IShop {
-  setTotalPrice: any;
   onDelete: (id: string) => void;
-  setIsReload: any;
-}
-
-interface ITotalPriceObj {
-  quality: number;
-  title: string;
-  countPrice: number;
+  eventCulcTotalPrice: any;
 }
 
 const CartItem = ({
@@ -32,16 +25,13 @@ const CartItem = ({
   title,
   _id,
   onDelete,
-  setIsReload,
-  setTotalPrice,
+  eventCulcTotalPrice,
 }: ICartItem) => {
   const [quality, setQuality] = useState(1);
   const [countPrice, setCountPrice] = useState(price);
 
   useEffect(() => {
-    setTotalPrice((prev: any) =>
-      prev.set(title, { price, quality, action: 1 })
-    );
+    eventCulcTotalPrice.firstRender({ title, countPrice });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,13 +74,14 @@ const CartItem = ({
               onClick={() => {
                 setQuality((quant) => --quant);
 
-                setCountPrice(countPrice - price);
+                const totalPrice = countPrice - price;
 
-                setTotalPrice((prev: any) =>
-                  prev.set(title, { price, quality, action: 0 })
-                );
+                setCountPrice(totalPrice);
 
-                setIsReload((prev: boolean) => !prev);
+                eventCulcTotalPrice.decrement({
+                  title,
+                  countPrice: totalPrice,
+                });
               }}
             >
               -
@@ -102,13 +93,14 @@ const CartItem = ({
               onClick={() => {
                 setQuality((quant) => ++quant);
 
-                setCountPrice(countPrice + price);
+                const totalPrice = countPrice + price;
 
-                setTotalPrice((prev: any) =>
-                  prev.set(title, { price, quality, action: 1 })
-                );
+                setCountPrice(totalPrice);
 
-                setIsReload((prev: boolean) => !prev);
+                eventCulcTotalPrice.increment({
+                  title,
+                  countPrice: totalPrice,
+                });
               }}
             >
               +
@@ -121,10 +113,7 @@ const CartItem = ({
             size="small"
             onClick={() => {
               onDelete(_id);
-              setTotalPrice((prev: any) =>
-                prev.set(title, { countPrice, quality, action: 0 })
-              );
-              setIsReload((prev: boolean) => !prev);
+              eventCulcTotalPrice.deleteCard(title);
             }}
           >
             Delete

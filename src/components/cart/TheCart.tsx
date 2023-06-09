@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, useState, useContext } from "react";
+import { useEffect, useReducer, useState, useContext, useRef } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
 
@@ -23,24 +23,65 @@ const initialState = {
   adress: "",
 };
 
+interface ICountPrice {
+  title: string;
+  countPrice: number;
+}
+
+const middle: any = [];
+
 const TheCart = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [totalPrice, setTotalPrice] = useState(new Map());
-  const [isReload, setIsReload] = useState(false);
+  const [totalPrice, setTotalPrice] = useState<any>([]);
+
   const [resultPrice, setResultPrice] = useState(0);
 
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
+  const eventCulcTotalPrice = {
+    increment: (item: ICountPrice) => {
+      const findIndex = cartOrder.findIndex(
+        (elem: any) => elem.title === item.title
+      );
+
+      setTotalPrice((prev: any) =>
+        prev.map((ele: any, id: number) =>
+          id === findIndex ? (ele = item) : ele
+        )
+      );
+    },
+    decrement: (item: ICountPrice) => {
+      const findIndex = cartOrder.findIndex(
+        (elem: any) => elem.title === item.title
+      );
+
+      setTotalPrice((prev: any) =>
+        prev.map((ele: any, id: number) =>
+          id === findIndex ? (ele = item) : ele
+        )
+      );
+    },
+
+    firstRender: (item: ICountPrice) => {
+      setTotalPrice((prev: any) => prev.concat(item));
+    },
+
+    deleteCard: (title: string) => {
+      setTotalPrice((prev: any) =>
+        prev.filter((item: any) => item.title !== title)
+      );
+    },
+  };
+  console.log(totalPrice);
+
   useEffect(() => {
-    const culcTotalPrice = () => {
-      totalPrice.forEach((item: any) => {
-        setResultPrice((prev) =>
-          item.action ? (prev += item.price) : (prev -= item.price)
-        );
-      });
-    };
-    culcTotalPrice();
-  }, [totalPrice, isReload]);
+    let res = totalPrice.reduce(
+      (total: number, item: ICountPrice) => item.countPrice + total,
+      0
+    );
+
+    setResultPrice(res);
+  }, [totalPrice]);
 
   const handleSubmitForm = async () => {
     const key = Object.keys(state);
@@ -78,7 +119,7 @@ const TheCart = () => {
           <FormCart />
         </Box>
         <CartConteiner>
-          <ListCart setTotalPrice={setTotalPrice} setIsReload={setIsReload} />
+          <ListCart eventCulcTotalPrice={eventCulcTotalPrice} />
         </CartConteiner>
         <Box
           display={"flex"}
