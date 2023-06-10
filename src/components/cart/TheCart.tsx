@@ -31,11 +31,13 @@ interface ICountPrice {
 const middle: any = [];
 
 const TheCart = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  // LOCAL STORAGE INITITAL
+  const storage = JSON.parse(localStorage.getItem("state")!) || initialState;
+  // STATE FORM AND TOTAL PRICE
+  const [state, dispatch] = useReducer(reducer, storage);
   const [totalPrice, setTotalPrice] = useState<any>([]);
-
   const [resultPrice, setResultPrice] = useState(0);
-
+  // CONTEXT
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
   const eventCulcTotalPrice = {
@@ -72,7 +74,6 @@ const TheCart = () => {
       );
     },
   };
-  console.log(totalPrice);
 
   useEffect(() => {
     let res = totalPrice.reduce(
@@ -89,6 +90,9 @@ const TheCart = () => {
       dispatch({ type: element, payload: "" });
     });
     setCartOrder([]);
+
+    localStorage.removeItem("state");
+
     // SEND
     sendOrder({ ...state, orders: cartOrder });
   };
@@ -134,7 +138,16 @@ const TheCart = () => {
             Total Price: {resultPrice.toFixed(2)}
           </Typography>
 
-          <Button variant="contained" type="submit" onClick={handleSubmitForm}>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={
+              state.name && state.email && state.adress && state.phone
+                ? false
+                : true
+            }
+            onClick={handleSubmitForm}
+          >
             Submit
           </Button>
         </Box>
