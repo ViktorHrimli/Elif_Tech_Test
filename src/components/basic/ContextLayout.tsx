@@ -7,9 +7,9 @@ import { LayoutContext } from "@/context";
 import { LayoutType } from "@/types";
 
 const ContextLayout = ({ children }: LayoutType) => {
-  const [cartOrder, setCartOrder] = useState(
-    JSON.parse(localStorage.getItem("cartOrder")!) || []
-  );
+  const [cartOrder, setCartOrder] = useState(() => {
+    return JSON.parse(localStorage.getItem("cartOrder")!) || [];
+  });
 
   useEffect(() => {
     localStorage.setItem("cartOrder", JSON.stringify(cartOrder));

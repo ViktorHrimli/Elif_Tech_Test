@@ -28,17 +28,29 @@ interface ICountPrice {
   countPrice: number;
 }
 
-const middle: any = [];
-
 const TheCart = () => {
   // LOCAL STORAGE INITITAL
-  const storage = JSON.parse(localStorage.getItem("state")!) || initialState;
+  let storage;
+  try {
+    storage = JSON.parse(localStorage.getItem("state")!) || initialState;
+  } catch (error) {}
   // STATE FORM AND TOTAL PRICE
-  const [state, dispatch] = useReducer(reducer, storage);
+  const [state, dispatch] = useReducer(reducer, storage || initialState);
   const [totalPrice, setTotalPrice] = useState<any>([]);
   const [resultPrice, setResultPrice] = useState(0);
   // CONTEXT
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
+
+  useEffect(() => {
+    let res = totalPrice.reduce(
+      (total: number, item: ICountPrice) => item.countPrice + total,
+      0
+    );
+
+    setResultPrice(res);
+  }, [totalPrice]);
+
+  useEffect(() => {}, []);
 
   const eventCulcTotalPrice = {
     increment: (item: ICountPrice) => {
@@ -75,22 +87,16 @@ const TheCart = () => {
     },
   };
 
-  useEffect(() => {
-    let res = totalPrice.reduce(
-      (total: number, item: ICountPrice) => item.countPrice + total,
-      0
-    );
-
-    setResultPrice(res);
-  }, [totalPrice]);
-
-  const handleSubmitForm = async () => {
+  const handleSubmitForm = () => {
     const key = Object.keys(state);
     key.forEach((element: any) => {
       dispatch({ type: element, payload: "" });
     });
+
     setCartOrder([]);
 
+    // LOCAL STORAGE
+    localStorage.removeItem("cartOrder");
     localStorage.removeItem("state");
 
     // SEND
