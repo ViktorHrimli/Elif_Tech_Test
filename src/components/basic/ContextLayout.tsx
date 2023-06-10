@@ -1,18 +1,20 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
+// CONTEXT
 import { LayoutContext } from "@/context";
-
+// TYPES
 import { LayoutType } from "@/types";
+// HELPERS
+import { setValueLocalStorage, getValueLocalStorage } from "@/helpers";
 
 const ContextLayout = ({ children }: LayoutType) => {
-  const [cartOrder, setCartOrder] = useState(() => {
-    return JSON.parse(localStorage.getItem("cartOrder")!) || [];
+  const [cartOrder, setCartOrder] = useState<any>(() => {
+    return getValueLocalStorage("cartOrder") || [];
   });
 
   useEffect(() => {
-    localStorage.setItem("cartOrder", JSON.stringify(cartOrder));
+    setValueLocalStorage("cartOrder", cartOrder);
   }, [cartOrder]);
 
   return (

@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import { Card, CardContent, Typography, Box, CardMedia } from "@mui/material";
 
 import { IShop } from "@/types";

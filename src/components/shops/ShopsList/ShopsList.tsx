@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 // API
-import { getShop } from "@/helpers/api";
+import { getShop } from "@/helpers";
 // COMPONENTS
 import { Item } from "./Item";
 // CONTEXT

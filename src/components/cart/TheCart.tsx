@@ -9,12 +9,14 @@ import { CartConteiner } from "./TheCart.styled";
 import { ListCart } from "./ListCart/ListCart";
 import { FormCart } from "./formCart/FormCart";
 // CONTEXT
-import { ContextCard } from "@/context";
-import { LayoutContext } from "@/context";
+import { ContextCard, LayoutContext } from "@/context";
 // HELPERS
-import { reducer } from "@/helpers/reducer";
-// API
-import { sendOrder } from "@/helpers/api";
+import {
+  reducer,
+  getValueLocalStorage,
+  clearValueLocalStorage,
+  sendOrder,
+} from "@/helpers";
 
 const initialState = {
   name: "",
@@ -30,12 +32,9 @@ interface ICountPrice {
 
 const TheCart = () => {
   // LOCAL STORAGE INITITAL
-  let storage;
-  try {
-    storage = JSON.parse(localStorage.getItem("state")!) || initialState;
-  } catch (error) {}
+  const storage = getValueLocalStorage("state") || initialState;
   // STATE FORM AND TOTAL PRICE
-  const [state, dispatch] = useReducer(reducer, storage || initialState);
+  const [state, dispatch] = useReducer(reducer, storage);
   const [totalPrice, setTotalPrice] = useState<any>([]);
   const [resultPrice, setResultPrice] = useState(0);
   // CONTEXT
@@ -96,8 +95,8 @@ const TheCart = () => {
     setCartOrder([]);
 
     // LOCAL STORAGE
-    localStorage.removeItem("cartOrder");
-    localStorage.removeItem("state");
+    clearValueLocalStorage("state");
+    clearValueLocalStorage("cartOrder");
 
     // SEND
     sendOrder({ ...state, orders: cartOrder });
