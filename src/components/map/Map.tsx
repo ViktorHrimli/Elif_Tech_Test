@@ -17,7 +17,7 @@ import { BsGeoAltFill } from "react-icons/bs";
 // UI
 import { TextField, Box, Typography, Icon } from "@mui/material";
 // LOCALS
-import { errorCallback } from "@/helpers/getLocation";
+import { errorCallback } from "@/helpers";
 
 type Libraries = (
   | "drawing"

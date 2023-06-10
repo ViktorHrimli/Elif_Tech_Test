@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useState, useRef } from "react";
-import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 
 import { TextField, Box } from "@mui/material";
 // LOCALS
@@ -28,6 +27,7 @@ const FormCart = () => {
       <TextField
         id="name"
         label="Name"
+        type="text"
         variant="outlined"
         value={state.name}
         sx={{ width: "70%" }}
@@ -38,6 +38,7 @@ const FormCart = () => {
       <TextField
         id="email"
         label="Email"
+        type="email"
         variant="outlined"
         sx={{ width: "70%" }}
         value={state.email}
@@ -47,6 +48,7 @@ const FormCart = () => {
       <TextField
         id="phone"
         label="Phone"
+        type="text"
         variant="outlined"
         sx={{ width: "70%" }}
         value={state.phone}
@@ -57,6 +59,7 @@ const FormCart = () => {
       <TextField
         id="adress"
         label="Adress"
+        type="text"
         variant="outlined"
         sx={{ width: "461px" }}
         onChange={(e) => {

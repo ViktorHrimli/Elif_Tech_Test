@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Box, TextField } from "@mui/material";
 // STYLES
 import { HistoryConteiner } from "./TheHistory.styled";
-// APi
 // LOCALS
 import { ListHistory } from "./ListHistory/ListHistory";
 

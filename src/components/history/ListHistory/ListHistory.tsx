@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 
-// API
-import { getAllOrder } from "@/helpers/api";
-
 import { HistoryItem } from "./HistoryItem";
+
+// API
+import { getAllOrder } from "@/helpers";
 
 type ListHistoryType = {
   email: string;

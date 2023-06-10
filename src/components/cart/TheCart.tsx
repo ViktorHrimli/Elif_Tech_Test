@@ -9,12 +9,14 @@ import { CartConteiner } from "./TheCart.styled";
 import { ListCart } from "./ListCart/ListCart";
 import { FormCart } from "./formCart/FormCart";
 // CONTEXT
-import { ContextCard } from "@/context";
-import { LayoutContext } from "@/context";
+import { ContextCard, LayoutContext } from "@/context";
 // HELPERS
-import { reducer } from "@/helpers/reducer";
-// API
-import { sendOrder } from "@/helpers/api";
+import {
+  reducer,
+  getValueLocalStorage,
+  clearValueLocalStorage,
+  sendOrder,
+} from "@/helpers";
 
 const initialState = {
   name: "",
@@ -28,15 +30,26 @@ interface ICountPrice {
   countPrice: number;
 }
 
-const middle: any = [];
-
 const TheCart = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  // LOCAL STORAGE INITITAL
+  const storage = getValueLocalStorage("state") || initialState;
+  // STATE FORM AND TOTAL PRICE
+  const [state, dispatch] = useReducer(reducer, storage);
   const [totalPrice, setTotalPrice] = useState<any>([]);
-
   const [resultPrice, setResultPrice] = useState(0);
-
+  // CONTEXT
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
+
+  useEffect(() => {
+    let res = totalPrice.reduce(
+      (total: number, item: ICountPrice) => item.countPrice + total,
+      0
+    );
+
+    setResultPrice(res);
+  }, [totalPrice]);
+
+  useEffect(() => {}, []);
 
   const eventCulcTotalPrice = {
     increment: (item: ICountPrice) => {
@@ -72,23 +85,19 @@ const TheCart = () => {
       );
     },
   };
-  console.log(totalPrice);
 
-  useEffect(() => {
-    let res = totalPrice.reduce(
-      (total: number, item: ICountPrice) => item.countPrice + total,
-      0
-    );
-
-    setResultPrice(res);
-  }, [totalPrice]);
-
-  const handleSubmitForm = async () => {
+  const handleSubmitForm = () => {
     const key = Object.keys(state);
     key.forEach((element: any) => {
       dispatch({ type: element, payload: "" });
     });
+
     setCartOrder([]);
+
+    // LOCAL STORAGE
+    clearValueLocalStorage("state");
+    clearValueLocalStorage("cartOrder");
+
     // SEND
     sendOrder({ ...state, orders: cartOrder });
   };
@@ -134,7 +143,16 @@ const TheCart = () => {
             Total Price: {resultPrice.toFixed(2)}
           </Typography>
 
-          <Button variant="contained" type="submit" onClick={handleSubmitForm}>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={
+              state.name && state.email && state.adress && state.phone
+                ? false
+                : true
+            }
+            onClick={handleSubmitForm}
+          >
             Submit
           </Button>
         </Box>
