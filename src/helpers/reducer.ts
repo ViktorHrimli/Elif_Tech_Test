@@ -1,3 +1,4 @@
+"use client";
 type ActionsType = {
   type: "name" | "email" | "phone" | "adress";
   payload: string;
