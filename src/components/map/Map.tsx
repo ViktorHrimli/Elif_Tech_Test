@@ -17,6 +17,7 @@ import { BsGeoAltFill } from "react-icons/bs";
 // UI
 import { TextField, Box, Typography, Icon } from "@mui/material";
 // LOCALS
+import { FormCart } from "../cart/formCart/FormCart";
 import { errorCallback } from "@/helpers";
 
 type Libraries = (
@@ -32,6 +33,7 @@ const LIBRARIES: Libraries = ["places"];
 const containerStyle = {
   width: "100%",
   height: "400px",
+  gap: "20px",
 };
 
 interface IMap {
@@ -39,7 +41,7 @@ interface IMap {
   setAddres: (value: string) => void;
 }
 
-function Map({ address, setAddres }: IMap) {
+function Map() {
   // USER COORDS
   const [isCenter, setIsCenter] = useState<any>(null);
   const [coordsList, setCoordsList] = useState<any>([]);
@@ -49,6 +51,8 @@ function Map({ address, setAddres }: IMap) {
   // STATE RESULT
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
+  // STATE ADRESS
+  const [addresMap, setAddresMap] = useState("");
 
   // REFS
   const libraries = useRef(LIBRARIES);
@@ -75,6 +79,11 @@ function Map({ address, setAddres }: IMap) {
     }
   }, []);
 
+  useEffect(() => {
+    addresMap.length > 3 ? calculateDistanse() : "";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresMap]);
+
   const calculateDistanse = async () => {
     const directionService = new google.maps.DirectionsService();
 
@@ -82,7 +91,7 @@ function Map({ address, setAddres }: IMap) {
       origin: coordsList[0],
       optimizeWaypoints: true,
       unitSystem: google.maps.UnitSystem.METRIC,
-      destination: { query: address },
+      destination: { query: addresMap },
       language: "ua, ru, en",
       travelMode: google.maps.TravelMode.DRIVING,
     });
@@ -118,7 +127,7 @@ function Map({ address, setAddres }: IMap) {
   }, []);
 
   return isLoaded ? (
-    <Box position={"relative"}>
+    <Box position={"relative"} width={"100%"}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={isCenter}
@@ -168,20 +177,20 @@ function Map({ address, setAddres }: IMap) {
           }}
         />
       </GoogleMap>
-      <Box zIndex="1" position={"absolute"} left={0} top={0}>
+      {/* <Box zIndex="1" position={"absolute"} left={0} top={0}>
         <Box flexGrow={1}>
-          <Autocomplete>
+          <Autocomplete options={{ strictBounds: true }}>
             <TextField
               type="text"
               variant="filled"
               placeholder="Adress"
               ref={destiantionRef}
               sx={{ position: "relative" }}
-              onBlur={(e) => setAddres(e.target.value)}
+              onBlur={(e) => setAddresMap(e.target.value)}
             />
           </Autocomplete>
           <AiOutlineSearch
-            onClick={() => (address.length > 3 ? calculateDistanse() : null)}
+            onClick={() => (addresMap.length > 3 ? calculateDistanse() : null)}
             width={20}
             height={20}
             color="black"
@@ -193,12 +202,18 @@ function Map({ address, setAddres }: IMap) {
             }}
           />
         </Box>
-      </Box>
+      </Box> */}
 
       <Box position={"absolute"} right={30} top={415}>
         <Typography>Distance: {distance} </Typography>
         <Typography>Duration: {duration} </Typography>
       </Box>
+
+      <FormCart
+        AutoComlpete={Autocomplete}
+        setRef={destiantionRef}
+        setAddresMap={setAddresMap}
+      />
     </Box>
   ) : (
     <p>...Loading</p>
