@@ -8,6 +8,9 @@ import { Box, Button, Typography } from "@mui/material";
 import { CartConteiner } from "./TheCart.styled";
 import { ListCart } from "./ListCart/ListCart";
 import { FormCart } from "./formCart/FormCart";
+
+import Map from "../map/Map";
+
 // CONTEXT
 import { ContextCard, LayoutContext } from "@/context";
 // HELPERS
@@ -37,6 +40,7 @@ const TheCart = () => {
   const [state, dispatch] = useReducer(reducer, storage);
   const [totalPrice, setTotalPrice] = useState<any>([]);
   const [resultPrice, setResultPrice] = useState(0);
+
   // CONTEXT
   const { cartOrder, setCartOrder }: any = useContext(LayoutContext);
 
@@ -84,6 +88,10 @@ const TheCart = () => {
         prev.filter((item: any) => item.title !== title)
       );
     },
+
+    onRefreshPrice: () => {
+      setTotalPrice([]);
+    },
   };
 
   const handleSubmitForm = () => {
@@ -93,6 +101,7 @@ const TheCart = () => {
     });
 
     setCartOrder([]);
+    eventCulcTotalPrice.onRefreshPrice();
 
     // LOCAL STORAGE
     clearValueLocalStorage("state");
@@ -125,7 +134,7 @@ const TheCart = () => {
           flexDirection={"column"}
           alignItems={"center"}
         >
-          <FormCart />
+          <Map />
         </Box>
         <CartConteiner>
           <ListCart eventCulcTotalPrice={eventCulcTotalPrice} />

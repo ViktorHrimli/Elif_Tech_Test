@@ -14,25 +14,27 @@ interface State {
   adress: string;
 }
 
+const STORAGE_KEY = "state";
+
 const reducer = (state: State, actions: ActionsType): State => {
   switch (actions.type) {
     case "name": {
-      setValueLocalStorage("state", { ...state, name: actions.payload });
+      setValueLocalStorage(STORAGE_KEY, { ...state, name: actions.payload });
 
       return { ...state, name: actions.payload };
     }
     case "email": {
-      setValueLocalStorage("state", { ...state, email: actions.payload });
+      setValueLocalStorage(STORAGE_KEY, { ...state, email: actions.payload });
 
       return { ...state, email: actions.payload };
     }
     case "phone": {
-      setValueLocalStorage("state", { ...state, phone: actions.payload });
+      setValueLocalStorage(STORAGE_KEY, { ...state, phone: actions.payload });
 
       return { ...state, phone: actions.payload };
     }
     case "adress": {
-      setValueLocalStorage("state", { ...state, adress: actions.payload });
+      setValueLocalStorage(STORAGE_KEY, { ...state, adress: actions.payload });
 
       return { ...state, adress: actions.payload };
     }

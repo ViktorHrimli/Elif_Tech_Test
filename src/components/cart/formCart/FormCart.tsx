@@ -8,9 +8,16 @@ import Map from "../../map/Map";
 // CONTEXT
 import { ContextCard } from "@/context";
 
-const FormCart = () => {
+const FormCart = ({
+  AutoComlpete,
+  setRef,
+  setAddresMap,
+}: {
+  AutoComlpete: any;
+  setRef: any;
+  setAddresMap: any;
+}) => {
   const { state, dispatch }: any = useContext(ContextCard);
-  const [addresMap, setAddresMap] = useState("");
 
   return (
     <Box
@@ -19,11 +26,28 @@ const FormCart = () => {
       alignItems={"start"}
       justifyContent={"center"}
       gap={"20px"}
+      marginTop={"50px"}
       width={"100%"}
     >
-      <Box width={"100%"} height={"400px"}>
-        <Map address={addresMap} setAddres={setAddresMap} />
-      </Box>
+      <AutoComlpete options={{ strictBounds: true }}>
+        <TextField
+          id="adress"
+          label="Adress"
+          type="text"
+          variant="outlined"
+          sx={{ width: "461px" }}
+          ref={setRef}
+          onChange={(e) => {
+            dispatch({ type: "adress", payload: e.target.value });
+          }}
+          onBlur={(e) => {
+            setAddresMap(e.target.value);
+            dispatch({ type: "adress", payload: e.target.value });
+          }}
+          value={state.adress}
+          required
+        />
+      </AutoComlpete>
       <TextField
         id="name"
         label="Name"
@@ -53,20 +77,6 @@ const FormCart = () => {
         sx={{ width: "70%" }}
         value={state.phone}
         onChange={(e) => dispatch({ type: "phone", payload: e.target.value })}
-        required
-      />
-
-      <TextField
-        id="adress"
-        label="Adress"
-        type="text"
-        variant="outlined"
-        sx={{ width: "461px" }}
-        onChange={(e) => {
-          dispatch({ type: "adress", payload: e.target.value });
-          setAddresMap(e.target.value);
-        }}
-        value={state.adress}
         required
       />
     </Box>
